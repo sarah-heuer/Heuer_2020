@@ -1,0 +1,1667 @@
+---
+title: "Heuer SpeakEasy Manuscript Code"
+author: "Sarah E. Heuer"
+date: "5/21/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(workflowr)
+```
+
+Calculate module expression and eigengenes
+```{r}
+genemods <- read.csv("Kacz_Pear_cluster_assignments_ONLY28Mod.csv")
+
+# separate genes into modules
+m1 <- genemods[which(genemods$cluster == "1"),]
+m2 <- genemods[which(genemods$cluster == "2"),]
+m3 <- genemods[which(genemods$cluster == "3"),]
+m4 <- genemods[which(genemods$cluster == "4"),]
+m5 <- genemods[which(genemods$cluster == "5"),]
+m6 <- genemods[which(genemods$cluster == "6"),]
+m7 <- genemods[which(genemods$cluster == "7"),]
+m8 <- genemods[which(genemods$cluster == "8"),]
+m9 <- genemods[which(genemods$cluster == "9"),]
+m10 <- genemods[which(genemods$cluster == "10"),]
+m11 <- genemods[which(genemods$cluster == "11"),]
+m12 <- genemods[which(genemods$cluster == "12"),]
+m13 <- genemods[which(genemods$cluster == "13"),]
+m14 <- genemods[which(genemods$cluster == "14"),]
+m15 <- genemods[which(genemods$cluster == "15"),]
+m16 <- genemods[which(genemods$cluster == "16"),]
+m17 <- genemods[which(genemods$cluster == "17"),]
+m18 <- genemods[which(genemods$cluster == "18"),]
+m19 <- genemods[which(genemods$cluster == "19"),]
+m20 <- genemods[which(genemods$cluster == "20"),]
+m21 <- genemods[which(genemods$cluster == "21"),]
+m22 <- genemods[which(genemods$cluster == "22"),]
+m23 <- genemods[which(genemods$cluster == "23"),]
+m24 <- genemods[which(genemods$cluster == "24"),]
+m25 <- genemods[which(genemods$cluster == "25"),]
+m26 <- genemods[which(genemods$cluster == "26"),]
+m27 <- genemods[which(genemods$cluster == "27"),]
+m28 <- genemods[which(genemods$cluster == "28"),]
+
+
+# load in RNAseq TPM data
+genes_tpm_byStrain <- read.csv("genesTPM_ComBatCorrected_byStrain_genesymbol.csv")
+phenotypes <- read.csv("ExpandedPhenoKey_strainAverages_allRNA.csv")
+
+# get TPM of genes in each module 
+# perform principal component analysis
+# scale data and get cluster average expression
+# bind with phenotypes
+#export as csv
+#m1
+m1 <- genes_tpm_byStrain[,which(colnames(genes_tpm_byStrain) %in% m1$gene)]
+m1.PCA <- prcomp(m1)
+m1.PCA <- as.data.frame(prcomp(m1)$x) 
+m1.PC1 <- as.data.frame(m1.PCA[,c(1)])
+colnames(m1.PC1)[1] <- "m1.PC1"
+m1.PC1 <- cbind("SampleID" = genes_tpm_byStrain$SampleID, m1.PC1)
+m1.scale <- scale(m1)
+m1.scale <- as.data.frame(m1.scale)
+m1.scale.avg <- as.data.frame(rowMeans(m1.scale))
+m1.scale.PC1 <- cbind(m1.PC1, m1.scale.avg)
+colnames(m1.scale.PC1)[3] <- "m1.avg"
+m1.PC1.plusPheno <- merge(phenotypes, m1.scale.PC1, by.x = "SampleID", by.y = "SampleID")
+m1.PC1.plusPheno <- m1.PC1.plusPheno[,-c(2, 7:30)]
+write.csv(m1.PC1.plusPheno, file = "m1_PC1AvgExp.csv", row.names = FALSE)
+
+#m2
+m2 <- genes_tpm_byStrain[,which(colnames(genes_tpm_byStrain) %in% m2$gene)]
+m2.PCA <- prcomp(m2)
+m2.PCA <- as.data.frame(prcomp(m2)$x) 
+m2.PC1 <- as.data.frame(m2.PCA[,c(1)])
+colnames(m2.PC1)[1] <- "m2.PC1"
+m2.PC1 <- cbind("SampleID" = genes_tpm_byStrain$SampleID, m2.PC1)
+m2.scale <- scale(m2)
+m2.scale <- as.data.frame(m2.scale)
+m2.scale.avg <- as.data.frame(rowMeans(m2.scale))
+m2.scale.PC1 <- cbind(m2.PC1, m2.scale.avg)
+colnames(m2.scale.PC1)[3] <- "m2.avg"
+m2.PC1.plusPheno <- merge(phenotypes, m2.scale.PC1, by.x = "SampleID", by.y = "SampleID")
+m2.PC1.plusPheno <- m2.PC1.plusPheno[,-c(2, 7:30)]
+write.csv(m2.PC1.plusPheno, file = "m2_PC1AvgExp.csv", row.names = FALSE)
+
+#m3
+m3 <- genes_tpm_byStrain[,which(colnames(genes_tpm_byStrain) %in% m3$gene)]
+m3.PCA <- prcomp(m3)
+m3.PCA <- as.data.frame(prcomp(m3)$x) 
+m3.PC1 <- as.data.frame(m3.PCA[,c(1)])
+colnames(m3.PC1)[1] <- "m3.PC1"
+m3.PC1 <- cbind("SampleID" = genes_tpm_byStrain$SampleID, m3.PC1)
+m3.scale <- scale(m3)
+m3.scale <- as.data.frame(m3.scale)
+m3.scale.avg <- as.data.frame(rowMeans(m3.scale))
+m3.scale.PC1 <- cbind(m3.PC1, m3.scale.avg)
+colnames(m3.scale.PC1)[3] <- "m3.avg"
+m3.PC1.plusPheno <- merge(phenotypes, m3.scale.PC1, by.x = "SampleID", by.y = "SampleID")
+m3.PC1.plusPheno <- m3.PC1.plusPheno[,-c(2, 7:30)]
+write.csv(m3.PC1.plusPheno, file = "m3_PC1AvgExp.csv", row.names = FALSE)
+
+#m4
+m4 <- genes_tpm_byStrain[,which(colnames(genes_tpm_byStrain) %in% m4$gene)]
+m4.PCA <- prcomp(m4)
+m4.PCA <- as.data.frame(prcomp(m4)$x) 
+m4.PC1 <- as.data.frame(m4.PCA[,c(1)])
+colnames(m4.PC1)[1] <- "m4.PC1"
+m4.PC1 <- cbind("SampleID" = genes_tpm_byStrain$SampleID, m4.PC1)
+m4.scale <- scale(m4)
+m4.scale <- as.data.frame(m4.scale)
+m4.scale.avg <- as.data.frame(rowMeans(m4.scale))
+m4.scale.PC1 <- cbind(m4.PC1, m4.scale.avg)
+colnames(m4.scale.PC1)[3] <- "m4.avg"
+m4.PC1.plusPheno <- merge(phenotypes, m4.scale.PC1, by.x = "SampleID", by.y = "SampleID")
+m4.PC1.plusPheno <- m4.PC1.plusPheno[,-c(2, 7:30)]
+write.csv(m4.PC1.plusPheno, file = "m4_PC1AvgExp.csv", row.names = FALSE)
+
+#m5
+m5 <- genes_tpm_byStrain[,which(colnames(genes_tpm_byStrain) %in% m5$gene)]
+m5.PCA <- prcomp(m5)
+m5.PCA <- as.data.frame(prcomp(m5)$x) 
+m5.PC1 <- as.data.frame(m5.PCA[,c(1)])
+colnames(m5.PC1)[1] <- "m5.PC1"
+m5.PC1 <- cbind("SampleID" = genes_tpm_byStrain$SampleID, m5.PC1)
+m5.scale <- scale(m5)
+m5.scale <- as.data.frame(m5.scale)
+m5.scale.avg <- as.data.frame(rowMeans(m5.scale))
+m5.scale.PC1 <- cbind(m5.PC1, m5.scale.avg)
+colnames(m5.scale.PC1)[3] <- "m5.avg"
+m5.PC1.plusPheno <- merge(phenotypes, m5.scale.PC1, by.x = "SampleID", by.y = "SampleID")
+m5.PC1.plusPheno <- m5.PC1.plusPheno[,-c(2, 7:30)]
+write.csv(m5.PC1.plusPheno, file = "m5_PC1AvgExp.csv", row.names = FALSE)
+
+#m6
+m6 <- genes_tpm_byStrain[,which(colnames(genes_tpm_byStrain) %in% m6$gene)]
+m6.PCA <- prcomp(m6)
+m6.PCA <- as.data.frame(prcomp(m6)$x) 
+m6.PC1 <- as.data.frame(m6.PCA[,c(1)])
+colnames(m6.PC1)[1] <- "m6.PC1"
+m6.PC1 <- cbind("SampleID" = genes_tpm_byStrain$SampleID, m6.PC1)
+m6.scale <- scale(m6)
+m6.scale <- as.data.frame(m6.scale)
+m6.scale.avg <- as.data.frame(rowMeans(m6.scale))
+m6.scale.PC1 <- cbind(m6.PC1, m6.scale.avg)
+colnames(m6.scale.PC1)[3] <- "m6.avg"
+m6.PC1.plusPheno <- merge(phenotypes, m6.scale.PC1, by.x = "SampleID", by.y = "SampleID")
+m6.PC1.plusPheno <- m6.PC1.plusPheno[,-c(2, 7:30)]
+write.csv(m6.PC1.plusPheno, file = "m6_PC1AvgExp.csv", row.names = FALSE)
+
+#m7
+m7 <- genes_tpm_byStrain[,which(colnames(genes_tpm_byStrain) %in% m7$gene)]
+m7.PCA <- prcomp(m7)
+m7.PCA <- as.data.frame(prcomp(m7)$x) 
+m7.PC1 <- as.data.frame(m7.PCA[,c(1)])
+colnames(m7.PC1)[1] <- "m7.PC1"
+m7.PC1 <- cbind("SampleID" = genes_tpm_byStrain$SampleID, m7.PC1)
+m7.scale <- scale(m7)
+m7.scale <- as.data.frame(m7.scale)
+m7.scale.avg <- as.data.frame(rowMeans(m7.scale))
+m7.scale.PC1 <- cbind(m7.PC1, m7.scale.avg)
+colnames(m7.scale.PC1)[3] <- "m7.avg"
+m7.PC1.plusPheno <- merge(phenotypes, m7.scale.PC1, by.x = "SampleID", by.y = "SampleID")
+m7.PC1.plusPheno <- m7.PC1.plusPheno[,-c(2, 7:30)]
+write.csv(m7.PC1.plusPheno, file = "m7_PC1AvgExp.csv", row.names = FALSE)
+
+#m8
+m8 <- genes_tpm_byStrain[,which(colnames(genes_tpm_byStrain) %in% m8$gene)]
+m8.PCA <- prcomp(m8)
+m8.PCA <- as.data.frame(prcomp(m8)$x) 
+m8.PC1 <- as.data.frame(m8.PCA[,c(1)])
+colnames(m8.PC1)[1] <- "m8.PC1"
+m8.PC1 <- cbind("SampleID" = genes_tpm_byStrain$SampleID, m8.PC1)
+m8.scale <- scale(m8)
+m8.scale <- as.data.frame(m8.scale)
+m8.scale.avg <- as.data.frame(rowMeans(m8.scale))
+m8.scale.PC1 <- cbind(m8.PC1, m8.scale.avg)
+colnames(m8.scale.PC1)[3] <- "m8.avg"
+m8.PC1.plusPheno <- merge(phenotypes, m8.scale.PC1, by.x = "SampleID", by.y = "SampleID")
+m8.PC1.plusPheno <- m8.PC1.plusPheno[,-c(2, 7:30)]
+write.csv(m8.PC1.plusPheno, file = "m8_PC1AvgExp.csv", row.names = FALSE)
+
+#m9
+m9 <- genes_tpm_byStrain[,which(colnames(genes_tpm_byStrain) %in% m9$gene)]
+m9.PCA <- prcomp(m9)
+m9.PCA <- as.data.frame(prcomp(m9)$x) 
+m9.PC1 <- as.data.frame(m9.PCA[,c(1)])
+colnames(m9.PC1)[1] <- "m9.PC1"
+m9.PC1 <- cbind("SampleID" = genes_tpm_byStrain$SampleID, m9.PC1)
+m9.scale <- scale(m9)
+m9.scale <- as.data.frame(m9.scale)
+m9.scale.avg <- as.data.frame(rowMeans(m9.scale))
+m9.scale.PC1 <- cbind(m9.PC1, m9.scale.avg)
+colnames(m9.scale.PC1)[3] <- "m9.avg"
+m9.PC1.plusPheno <- merge(phenotypes, m9.scale.PC1, by.x = "SampleID", by.y = "SampleID")
+m9.PC1.plusPheno <- m9.PC1.plusPheno[,-c(2, 7:30)]
+write.csv(m9.PC1.plusPheno, file = "m9_PC1AvgExp.csv", row.names = FALSE)
+
+#m10
+m10 <- genes_tpm_byStrain[,which(colnames(genes_tpm_byStrain) %in% m10$gene)]
+m10.PCA <- prcomp(m10)
+m10.PCA <- as.data.frame(prcomp(m10)$x) 
+m10.PC1 <- as.data.frame(m10.PCA[,c(1)])
+colnames(m10.PC1)[1] <- "m10.PC1"
+m10.PC1 <- cbind("SampleID" = genes_tpm_byStrain$SampleID, m10.PC1)
+m10.scale <- scale(m10)
+m10.scale <- as.data.frame(m10.scale)
+m10.scale.avg <- as.data.frame(rowMeans(m10.scale))
+m10.scale.PC1 <- cbind(m10.PC1, m10.scale.avg)
+colnames(m10.scale.PC1)[3] <- "m10.avg"
+m10.PC1.plusPheno <- merge(phenotypes, m10.scale.PC1, by.x = "SampleID", by.y = "SampleID")
+m10.PC1.plusPheno <- m10.PC1.plusPheno[,-c(2, 7:30)]
+write.csv(m10.PC1.plusPheno, file = "m10_PC1AvgExp.csv", row.names = FALSE)
+
+#m11
+m11 <- genes_tpm_byStrain[,which(colnames(genes_tpm_byStrain) %in% m11$gene)]
+m11.PCA <- prcomp(m11)
+m11.PCA <- as.data.frame(prcomp(m11)$x) 
+m11.PC1 <- as.data.frame(m11.PCA[,c(1)])
+colnames(m11.PC1)[1] <- "m11.PC1"
+m11.PC1 <- cbind("SampleID" = genes_tpm_byStrain$SampleID, m11.PC1)
+m11.scale <- scale(m11)
+m11.scale <- as.data.frame(m11.scale)
+m11.scale.avg <- as.data.frame(rowMeans(m11.scale))
+m11.scale.PC1 <- cbind(m11.PC1, m11.scale.avg)
+colnames(m11.scale.PC1)[3] <- "m11.avg"
+m11.PC1.plusPheno <- merge(phenotypes, m11.scale.PC1, by.x = "SampleID", by.y = "SampleID")
+m11.PC1.plusPheno <- m11.PC1.plusPheno[,-c(2, 7:30)]
+write.csv(m11.PC1.plusPheno, file = "m11_PC1AvgExp.csv", row.names = FALSE)
+
+#m12
+m12 <- genes_tpm_byStrain[,which(colnames(genes_tpm_byStrain) %in% m12$gene)]
+m12.PCA <- prcomp(m12)
+m12.PCA <- as.data.frame(prcomp(m12)$x) 
+m12.PC1 <- as.data.frame(m12.PCA[,c(1)])
+colnames(m12.PC1)[1] <- "m12.PC1"
+m12.PC1 <- cbind("SampleID" = genes_tpm_byStrain$SampleID, m12.PC1)
+m12.scale <- scale(m12)
+m12.scale <- as.data.frame(m12.scale)
+m12.scale.avg <- as.data.frame(rowMeans(m12.scale))
+m12.scale.PC1 <- cbind(m12.PC1, m12.scale.avg)
+colnames(m12.scale.PC1)[3] <- "m12.avg"
+m12.PC1.plusPheno <- merge(phenotypes, m12.scale.PC1, by.x = "SampleID", by.y = "SampleID")
+m12.PC1.plusPheno <- m12.PC1.plusPheno[,-c(2, 7:30)]
+write.csv(m12.PC1.plusPheno, file = "m12_PC1AvgExp.csv", row.names = FALSE)
+
+#m13
+m13 <- genes_tpm_byStrain[,which(colnames(genes_tpm_byStrain) %in% m13$gene)]
+m13.PCA <- prcomp(m13)
+m13.PCA <- as.data.frame(prcomp(m13)$x) 
+m13.PC1 <- as.data.frame(m13.PCA[,c(1)])
+colnames(m13.PC1)[1] <- "m13.PC1"
+m13.PC1 <- cbind("SampleID" = genes_tpm_byStrain$SampleID, m13.PC1)
+m13.scale <- scale(m13)
+m13.scale <- as.data.frame(m13.scale)
+m13.scale.avg <- as.data.frame(rowMeans(m13.scale))
+m13.scale.PC1 <- cbind(m13.PC1, m13.scale.avg)
+colnames(m13.scale.PC1)[3] <- "m13.avg"
+m13.PC1.plusPheno <- merge(phenotypes, m13.scale.PC1, by.x = "SampleID", by.y = "SampleID")
+m13.PC1.plusPheno <- m13.PC1.plusPheno[,-c(2, 7:30)]
+write.csv(m13.PC1.plusPheno, file = "m13_PC1AvgExp.csv", row.names = FALSE)
+
+#m14
+m14 <- genes_tpm_byStrain[,which(colnames(genes_tpm_byStrain) %in% m14$gene)]
+m14.PCA <- prcomp(m14)
+m14.PCA <- as.data.frame(prcomp(m14)$x) 
+m14.PC1 <- as.data.frame(m14.PCA[,c(1)])
+colnames(m14.PC1)[1] <- "m14.PC1"
+m14.PC1 <- cbind("SampleID" = genes_tpm_byStrain$SampleID, m14.PC1)
+m14.scale <- scale(m14)
+m14.scale <- as.data.frame(m14.scale)
+m14.scale.avg <- as.data.frame(rowMeans(m14.scale))
+m14.scale.PC1 <- cbind(m14.PC1, m14.scale.avg)
+colnames(m14.scale.PC1)[3] <- "m14.avg"
+m14.PC1.plusPheno <- merge(phenotypes, m14.scale.PC1, by.x = "SampleID", by.y = "SampleID")
+m14.PC1.plusPheno <- m14.PC1.plusPheno[,-c(2, 7:30)]
+write.csv(m14.PC1.plusPheno, file = "m14_PC1AvgExp.csv", row.names = FALSE)
+
+#m15
+m15 <- genes_tpm_byStrain[,which(colnames(genes_tpm_byStrain) %in% m15$gene)]
+m15.PCA <- prcomp(m15)
+m15.PCA <- as.data.frame(prcomp(m15)$x) 
+m15.PC1 <- as.data.frame(m15.PCA[,c(1)])
+colnames(m15.PC1)[1] <- "m15.PC1"
+m15.PC1 <- cbind("SampleID" = genes_tpm_byStrain$SampleID, m15.PC1)
+m15.scale <- scale(m15)
+m15.scale <- as.data.frame(m15.scale)
+m15.scale.avg <- as.data.frame(rowMeans(m15.scale))
+m15.scale.PC1 <- cbind(m15.PC1, m15.scale.avg)
+colnames(m15.scale.PC1)[3] <- "m15.avg"
+m15.PC1.plusPheno <- merge(phenotypes, m15.scale.PC1, by.x = "SampleID", by.y = "SampleID")
+m15.PC1.plusPheno <- m15.PC1.plusPheno[,-c(2, 7:30)]
+write.csv(m15.PC1.plusPheno, file = "m15_PC1AvgExp.csv", row.names = FALSE)
+
+#m16
+m16 <- genes_tpm_byStrain[,which(colnames(genes_tpm_byStrain) %in% m16$gene)]
+m16.PCA <- prcomp(m16)
+m16.PCA <- as.data.frame(prcomp(m16)$x) 
+m16.PC1 <- as.data.frame(m16.PCA[,c(1)])
+colnames(m16.PC1)[1] <- "m16.PC1"
+m16.PC1 <- cbind("SampleID" = genes_tpm_byStrain$SampleID, m16.PC1)
+m16.scale <- scale(m16)
+m16.scale <- as.data.frame(m16.scale)
+m16.scale.avg <- as.data.frame(rowMeans(m16.scale))
+m16.scale.PC1 <- cbind(m16.PC1, m16.scale.avg)
+colnames(m16.scale.PC1)[3] <- "m16.avg"
+m16.PC1.plusPheno <- merge(phenotypes, m16.scale.PC1, by.x = "SampleID", by.y = "SampleID")
+m16.PC1.plusPheno <- m16.PC1.plusPheno[,-c(2, 7:30)]
+write.csv(m16.PC1.plusPheno, file = "m16_PC1AvgExp.csv", row.names = FALSE)
+
+#m17
+m17 <- genes_tpm_byStrain[,which(colnames(genes_tpm_byStrain) %in% m17$gene)]
+m17.PCA <- prcomp(m17)
+m17.PCA <- as.data.frame(prcomp(m17)$x) 
+m17.PC1 <- as.data.frame(m17.PCA[,c(1)])
+colnames(m17.PC1)[1] <- "m17.PC1"
+m17.PC1 <- cbind("SampleID" = genes_tpm_byStrain$SampleID, m17.PC1)
+m17.scale <- scale(m17)
+m17.scale <- as.data.frame(m17.scale)
+m17.scale.avg <- as.data.frame(rowMeans(m17.scale))
+m17.scale.PC1 <- cbind(m17.PC1, m17.scale.avg)
+colnames(m17.scale.PC1)[3] <- "m17.avg"
+m17.PC1.plusPheno <- merge(phenotypes, m17.scale.PC1, by.x = "SampleID", by.y = "SampleID")
+m17.PC1.plusPheno <- m17.PC1.plusPheno[,-c(2, 7:30)]
+write.csv(m17.PC1.plusPheno, file = "m17_PC1AvgExp.csv", row.names = FALSE)
+
+#m18
+m18 <- genes_tpm_byStrain[,which(colnames(genes_tpm_byStrain) %in% m18$gene)]
+m18.PCA <- prcomp(m18)
+m18.PCA <- as.data.frame(prcomp(m18)$x) 
+m18.PC1 <- as.data.frame(m18.PCA[,c(1)])
+colnames(m18.PC1)[1] <- "m18.PC1"
+m18.PC1 <- cbind("SampleID" = genes_tpm_byStrain$SampleID, m18.PC1)
+m18.scale <- scale(m18)
+m18.scale <- as.data.frame(m18.scale)
+m18.scale.avg <- as.data.frame(rowMeans(m18.scale))
+m18.scale.PC1 <- cbind(m18.PC1, m18.scale.avg)
+colnames(m18.scale.PC1)[3] <- "m18.avg"
+m18.PC1.plusPheno <- merge(phenotypes, m18.scale.PC1, by.x = "SampleID", by.y = "SampleID")
+m18.PC1.plusPheno <- m18.PC1.plusPheno[,-c(2, 7:30)]
+write.csv(m18.PC1.plusPheno, file = "m18_PC1AvgExp.csv", row.names = FALSE)
+
+#m19
+m19 <- genes_tpm_byStrain[,which(colnames(genes_tpm_byStrain) %in% m19$gene)]
+m19.PCA <- prcomp(m19)
+m19.PCA <- as.data.frame(prcomp(m19)$x) 
+m19.PC1 <- as.data.frame(m19.PCA[,c(1)])
+colnames(m19.PC1)[1] <- "m19.PC1"
+m19.PC1 <- cbind("SampleID" = genes_tpm_byStrain$SampleID, m19.PC1)
+m19.scale <- scale(m19)
+m19.scale <- as.data.frame(m19.scale)
+m19.scale.avg <- as.data.frame(rowMeans(m19.scale))
+m19.scale.PC1 <- cbind(m19.PC1, m19.scale.avg)
+colnames(m19.scale.PC1)[3] <- "m19.avg"
+m19.PC1.plusPheno <- merge(phenotypes, m19.scale.PC1, by.x = "SampleID", by.y = "SampleID")
+m19.PC1.plusPheno <- m19.PC1.plusPheno[,-c(2, 7:30)]
+write.csv(m19.PC1.plusPheno, file = "m19_PC1AvgExp.csv", row.names = FALSE)
+
+#m20
+m20 <- genes_tpm_byStrain[,which(colnames(genes_tpm_byStrain) %in% m20$gene)]
+m20.PCA <- prcomp(m20)
+m20.PCA <- as.data.frame(prcomp(m20)$x) 
+m20.PC1 <- as.data.frame(m20.PCA[,c(1)])
+colnames(m20.PC1)[1] <- "m20.PC1"
+m20.PC1 <- cbind("SampleID" = genes_tpm_byStrain$SampleID, m20.PC1)
+m20.scale <- scale(m20)
+m20.scale <- as.data.frame(m20.scale)
+m20.scale.avg <- as.data.frame(rowMeans(m20.scale))
+m20.scale.PC1 <- cbind(m20.PC1, m20.scale.avg)
+colnames(m20.scale.PC1)[3] <- "m20.avg"
+m20.PC1.plusPheno <- merge(phenotypes, m20.scale.PC1, by.x = "SampleID", by.y = "SampleID")
+m20.PC1.plusPheno <- m20.PC1.plusPheno[,-c(2, 7:30)]
+write.csv(m20.PC1.plusPheno, file = "m20_PC1AvgExp.csv", row.names = FALSE)
+
+#m21
+m21 <- genes_tpm_byStrain[,which(colnames(genes_tpm_byStrain) %in% m21$gene)]
+m21.PCA <- prcomp(m21)
+m21.PCA <- as.data.frame(prcomp(m21)$x) 
+m21.PC1 <- as.data.frame(m21.PCA[,c(1)])
+colnames(m21.PC1)[1] <- "m21.PC1"
+m21.PC1 <- cbind("SampleID" = genes_tpm_byStrain$SampleID, m21.PC1)
+m21.scale <- scale(m21)
+m21.scale <- as.data.frame(m21.scale)
+m21.scale.avg <- as.data.frame(rowMeans(m21.scale))
+m21.scale.PC1 <- cbind(m21.PC1, m21.scale.avg)
+colnames(m21.scale.PC1)[3] <- "m21.avg"
+m21.PC1.plusPheno <- merge(phenotypes, m21.scale.PC1, by.x = "SampleID", by.y = "SampleID")
+m21.PC1.plusPheno <- m21.PC1.plusPheno[,-c(2, 7:30)]
+write.csv(m21.PC1.plusPheno, file = "m21_PC1AvgExp.csv", row.names = FALSE)
+
+#m22
+m22 <- genes_tpm_byStrain[,which(colnames(genes_tpm_byStrain) %in% m22$gene)]
+m22.PCA <- prcomp(m22)
+m22.PCA <- as.data.frame(prcomp(m22)$x) 
+m22.PC1 <- as.data.frame(m22.PCA[,c(1)])
+colnames(m22.PC1)[1] <- "m22.PC1"
+m22.PC1 <- cbind("SampleID" = genes_tpm_byStrain$SampleID, m22.PC1)
+m22.scale <- scale(m22)
+m22.scale <- as.data.frame(m22.scale)
+m22.scale.avg <- as.data.frame(rowMeans(m22.scale))
+m22.scale.PC1 <- cbind(m22.PC1, m22.scale.avg)
+colnames(m22.scale.PC1)[3] <- "m22.avg"
+m22.PC1.plusPheno <- merge(phenotypes, m22.scale.PC1, by.x = "SampleID", by.y = "SampleID")
+m22.PC1.plusPheno <- m22.PC1.plusPheno[,-c(2, 7:30)]
+write.csv(m22.PC1.plusPheno, file = "m22_PC1AvgExp.csv", row.names = FALSE)
+
+#m23
+m23 <- genes_tpm_byStrain[,which(colnames(genes_tpm_byStrain) %in% m23$gene)]
+m23.PCA <- prcomp(m23)
+m23.PCA <- as.data.frame(prcomp(m23)$x) 
+m23.PC1 <- as.data.frame(m23.PCA[,c(1)])
+colnames(m23.PC1)[1] <- "m23.PC1"
+m23.PC1 <- cbind("SampleID" = genes_tpm_byStrain$SampleID, m23.PC1)
+m23.scale <- scale(m23)
+m23.scale <- as.data.frame(m23.scale)
+m23.scale.avg <- as.data.frame(rowMeans(m23.scale))
+m23.scale.PC1 <- cbind(m23.PC1, m23.scale.avg)
+colnames(m23.scale.PC1)[3] <- "m23.avg"
+m23.PC1.plusPheno <- merge(phenotypes, m23.scale.PC1, by.x = "SampleID", by.y = "SampleID")
+m23.PC1.plusPheno <- m23.PC1.plusPheno[,-c(2, 7:30)]
+write.csv(m23.PC1.plusPheno, file = "m23_PC1AvgExp.csv", row.names = FALSE)
+
+#m24
+m24 <- genes_tpm_byStrain[,which(colnames(genes_tpm_byStrain) %in% m24$gene)]
+m24.PCA <- prcomp(m24)
+m24.PCA <- as.data.frame(prcomp(m24)$x) 
+m24.PC1 <- as.data.frame(m24.PCA[,c(1)])
+colnames(m24.PC1)[1] <- "m24.PC1"
+m24.PC1 <- cbind("SampleID" = genes_tpm_byStrain$SampleID, m24.PC1)
+m24.scale <- scale(m24)
+m24.scale <- as.data.frame(m24.scale)
+m24.scale.avg <- as.data.frame(rowMeans(m24.scale))
+m24.scale.PC1 <- cbind(m24.PC1, m24.scale.avg)
+colnames(m24.scale.PC1)[3] <- "m24.avg"
+m24.PC1.plusPheno <- merge(phenotypes, m24.scale.PC1, by.x = "SampleID", by.y = "SampleID")
+m24.PC1.plusPheno <- m24.PC1.plusPheno[,-c(2, 7:30)]
+write.csv(m24.PC1.plusPheno, file = "m24_PC1AvgExp.csv", row.names = FALSE)
+
+#m25
+m25 <- genes_tpm_byStrain[,which(colnames(genes_tpm_byStrain) %in% m25$gene)]
+m25.PCA <- prcomp(m25)
+m25.PCA <- as.data.frame(prcomp(m25)$x) 
+m25.PC1 <- as.data.frame(m25.PCA[,c(1)])
+colnames(m25.PC1)[1] <- "m25.PC1"
+m25.PC1 <- cbind("SampleID" = genes_tpm_byStrain$SampleID, m25.PC1)
+m25.scale <- scale(m25)
+m25.scale <- as.data.frame(m25.scale)
+m25.scale.avg <- as.data.frame(rowMeans(m25.scale))
+m25.scale.PC1 <- cbind(m25.PC1, m25.scale.avg)
+colnames(m25.scale.PC1)[3] <- "m25.avg"
+m25.PC1.plusPheno <- merge(phenotypes, m25.scale.PC1, by.x = "SampleID", by.y = "SampleID")
+m25.PC1.plusPheno <- m25.PC1.plusPheno[,-c(2, 7:30)]
+write.csv(m25.PC1.plusPheno, file = "m25_PC1AvgExp.csv", row.names = FALSE)
+
+#m26
+m26 <- genes_tpm_byStrain[,which(colnames(genes_tpm_byStrain) %in% m26$gene)]
+m26.PCA <- prcomp(m26)
+m26.PCA <- as.data.frame(prcomp(m26)$x) 
+m26.PC1 <- as.data.frame(m26.PCA[,c(1)])
+colnames(m26.PC1)[1] <- "m26.PC1"
+m26.PC1 <- cbind("SampleID" = genes_tpm_byStrain$SampleID, m26.PC1)
+m26.scale <- scale(m26)
+m26.scale <- as.data.frame(m26.scale)
+m26.scale.avg <- as.data.frame(rowMeans(m26.scale))
+m26.scale.PC1 <- cbind(m26.PC1, m26.scale.avg)
+colnames(m26.scale.PC1)[3] <- "m26.avg"
+m26.PC1.plusPheno <- merge(phenotypes, m26.scale.PC1, by.x = "SampleID", by.y = "SampleID")
+m26.PC1.plusPheno <- m26.PC1.plusPheno[,-c(2, 7:30)]
+write.csv(m26.PC1.plusPheno, file = "m26_PC1AvgExp.csv", row.names = FALSE)
+
+#m27
+m27 <- genes_tpm_byStrain[,which(colnames(genes_tpm_byStrain) %in% m27$gene)]
+m27.PCA <- prcomp(m27)
+m27.PCA <- as.data.frame(prcomp(m27)$x) 
+m27.PC1 <- as.data.frame(m27.PCA[,c(1)])
+colnames(m27.PC1)[1] <- "m27.PC1"
+m27.PC1 <- cbind("SampleID" = genes_tpm_byStrain$SampleID, m27.PC1)
+m27.scale <- scale(m27)
+m27.scale <- as.data.frame(m27.scale)
+m27.scale.avg <- as.data.frame(rowMeans(m27.scale))
+m27.scale.PC1 <- cbind(m27.PC1, m27.scale.avg)
+colnames(m27.scale.PC1)[3] <- "m27.avg"
+m27.PC1.plusPheno <- merge(phenotypes, m27.scale.PC1, by.x = "SampleID", by.y = "SampleID")
+m27.PC1.plusPheno <- m27.PC1.plusPheno[,-c(2, 7:30)]
+write.csv(m27.PC1.plusPheno, file = "m27_PC1AvgExp.csv", row.names = FALSE)
+
+#m28
+m28 <- genes_tpm_byStrain[,which(colnames(genes_tpm_byStrain) %in% m28$gene)]
+m28.PCA <- prcomp(m28)
+m28.PCA <- as.data.frame(prcomp(m28)$x) 
+m28.PC1 <- as.data.frame(m28.PCA[,c(1)])
+colnames(m28.PC1)[1] <- "m28.PC1"
+m28.PC1 <- cbind("SampleID" = genes_tpm_byStrain$SampleID, m28.PC1)
+m28.scale <- scale(m28)
+m28.scale <- as.data.frame(m28.scale)
+m28.scale.avg <- as.data.frame(rowMeans(m28.scale))
+m28.scale.PC1 <- cbind(m28.PC1, m28.scale.avg)
+colnames(m28.scale.PC1)[3] <- "m28.avg"
+m28.PC1.plusPheno <- merge(phenotypes, m28.scale.PC1, by.x = "SampleID", by.y = "SampleID")
+m28.PC1.plusPheno <- m28.PC1.plusPheno[,-c(2, 7:30)]
+write.csv(m28.PC1.plusPheno, file = "m28_PC1AvgExp.csv", row.names = FALSE)
+
+
+```
+
+Run cell-type specificity analysis on all generated modules
+```{r cars}
+setwd("~/Box/Kaz lab team folder/Heuer/Manuscripts/Heuer_SpeakEasy_Update/SubmittedVersions/SE_Code/files")
+barres.cells <- read.csv("BarresLab_CellType_MAX.csv")
+modules <- read.csv("Kacz_Pear_cluster_assignments_ONLY28Mod.csv")
+modules$cluster <- as.character(modules$cluster)
+
+cell.types <- merge(modules, barres.cells, by.x = "gene", by.y = "gene")
+write.csv(cell.types, file = "BarresCellTypes_modules.csv", row.names = FALSE)
+
+astrocytes <- cell.types[which(cell.types$max == "Astrocytes"),]
+EC <- cell.types[which(cell.types$max == "Endothelial.Cells"),]
+neuron <- cell.types[which(cell.types$max == "Neuron"),]
+microglia <- cell.types[which(cell.types$max == "Microglia"),]
+OPC <- cell.types[which(cell.types$max == "Oligodendrocyte.Precursor.Cell"),]
+New.Oligo <- cell.types[which(cell.types$max == "Newly.Formed.Oligodendrocyte"),]
+Myelin.Oligo <- cell.types[which(cell.types$max == "Myelinating.Oligodendrocytes"),]
+
+# separate modules based on if they showed up in barres list
+m1 <- cell.types[which(cell.types$cluster == "1"),]
+m2 <- cell.types[which(cell.types$cluster == "2"),]
+m3 <- cell.types[which(cell.types$cluster == "3"),]
+m4 <- cell.types[which(cell.types$cluster == "4"),]
+m5 <- cell.types[which(cell.types$cluster == "5"),]
+m6 <- cell.types[which(cell.types$cluster == "6"),]
+m7 <- cell.types[which(cell.types$cluster == "7"),]
+m8 <- cell.types[which(cell.types$cluster == "8"),]
+m9 <- cell.types[which(cell.types$cluster == "9"),]
+m10 <- cell.types[which(cell.types$cluster == "10"),]
+m11 <- cell.types[which(cell.types$cluster == "11"),]
+m12 <- cell.types[which(cell.types$cluster == "12"),]
+m13 <- cell.types[which(cell.types$cluster == "13"),]
+m14 <- cell.types[which(cell.types$cluster == "14"),]
+m15 <- cell.types[which(cell.types$cluster == "15"),]
+m16 <- cell.types[which(cell.types$cluster == "16"),]
+m18 <- cell.types[which(cell.types$cluster == "18"),]
+m19 <- cell.types[which(cell.types$cluster == "19"),]
+m20 <- cell.types[which(cell.types$cluster == "20"),]
+m21 <- cell.types[which(cell.types$cluster == "21"),]
+m22 <- cell.types[which(cell.types$cluster == "22"),]
+m23 <- cell.types[which(cell.types$cluster == "23"),]
+m24 <- cell.types[which(cell.types$cluster == "24"),]
+m25 <- cell.types[which(cell.types$cluster == "25"),]
+m26 <- cell.types[which(cell.types$cluster == "26"),]
+m27 <- cell.types[which(cell.types$cluster == "27"),]
+m28 <- cell.types[which(cell.types$cluster == "28"),]
+
+
+
+#########################################################
+# hypogeometric test
+#define significance of enrichment given gene lists
+#use phyper
+#q = size of overlap-1
+#m = number of genes in set #1
+#n = total number of genes tested - m
+#k = number of genes in set 2
+#lower.tail = FALSE,
+#log.p = FALSE
+
+#celltype list only has 12978 genes, so this is our max data set (only have annotation data for that many)
+#how many are neurons, etc
+
+# Astrocytes
+#phyper(q=overlap of module and astrocytes -1, m = number of genes in module, n = barres lab total genes - genes in module, k = number of astrocyte possible genes)
+q = as.numeric(length(intersect(m28$gene, astrocytes$gene)) - 1) 
+m = as.numeric(length(unique(m28$gene))) 
+n = as.numeric(11694 - m) 
+k = as.numeric(length(unique(astrocytes$gene))) 
+astrocytes.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+astrocytes.p
+
+# Endothelial cells
+#phyper(q=overlap of module and endothelial cells -1, m = number of genes in module, n = barres lab total genes - genes in module, k = number of endothelial cell possible genes)
+q = as.numeric(length(intersect(m28$gene, EC$gene)) - 1) 
+m = as.numeric(length(unique(m28$gene))) 
+n = as.numeric(11694 - m) 
+k = as.numeric(length(unique(EC$gene))) 
+EC.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+EC.p
+
+# Neurons
+#phyper(q=overlap of module and neurons -1, m = number of genes in module, n = barres lab total genes - genes in module, k = number of neuron possible genes)
+q = as.numeric(length(intersect(m28$gene, neuron$gene)) - 1) 
+m = as.numeric(length(unique(m28$gene))) 
+n = as.numeric(11694 - m) 
+k = as.numeric(length(unique(neuron$gene))) 
+neuron.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+neuron.p
+
+# Microglia
+#phyper(q=overlap of module and microglia -1, m = number of genes in module, n = barres lab total genes - genes in module, k = number of microglia possible genes)
+q = as.numeric(length(intersect(m28$gene, microglia$gene)) - 1) 
+m = as.numeric(length(unique(m28$gene))) 
+n = as.numeric(11694 - m) 
+k = as.numeric(length(unique(microglia$gene))) 
+microglia.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+microglia.p
+
+# Oligodendrocyte Precursor Cells (OPCs)
+#phyper(q=overlap of module and OPCs -1, m = number of genes in module, n = barres lab total genes - genes in module, k = number of OPCs possible genes)
+q = as.numeric(length(intersect(m28$gene, OPC$gene)) - 1) 
+m = as.numeric(length(unique(m28$gene))) 
+n = as.numeric(11694 - m) 
+k = as.numeric(length(unique(OPC$gene))) 
+OPC.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+OPC.p
+
+# New Oligodendrocytes
+#phyper(q=overlap of module and new oligodendrocytes -1, m = number of genes in module, n = barres lab total genes - genes in module, k = number of New oligodendrocytes possible genes)
+q = as.numeric(length(intersect(m28$gene, New.Oligo$gene)) - 1) 
+m = as.numeric(length(unique(m28$gene))) 
+n = as.numeric(11694 - m) 
+k = as.numeric(length(unique(New.Oligo$gene))) 
+New.Oligo.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+New.Oligo.p
+
+# Myelinating Oligodendrocytes
+#phyper(q=overlap of module and myelintating oliigodendrocytes -1, m = number of genes in module, n = barres lab total genes - genes in module, k = number of myelinating oligodendrocyte possible genes)
+q = as.numeric(length(intersect(m28$gene, Myelin.Oligo$gene)) - 1) 
+m = as.numeric(length(unique(m28$gene))) 
+n = as.numeric(11694 - m) 
+k = as.numeric(length(unique(Myelin.Oligo$gene))) 
+Myelin.Oligo.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+Myelin.Oligo.p
+```
+
+Perform GO enrichment on all modules
+```{r}
+GO_Enrichment = function(geneList, background, convert = c(TRUE,FALSE), type, hierarchy = c("MF","CC","BP"), filename){
+  
+  require(AnnotationDbi)
+  require(org.Mm.eg.db)
+  require(clusterProfiler)
+  
+  if(convert == TRUE){
+    
+    genes <- bitr(geneList, fromType = "SYMBOL",
+                  toType = c("ENTREZID", "ENSEMBL"), 
+                  OrgDb = org.Mm.eg.db)
+    
+    go <- enrichGO(gene          = as.character(genes$ENTREZID),
+                   # universe      = as.character(dat$ENTREZID),
+                   OrgDb         = org.Mm.eg.db,
+                   keyType       = "ENTREZID", 
+                   ont           = hierarchy,
+                   pAdjustMethod = "BH", 
+                   pvalueCutoff  = 0.05,
+                   qvalueCutoff  = 0.05,
+                   readable      = TRUE)
+    
+  } else {
+    
+    go <- enrichGO(gene          = geneList,
+                   # universe      = as.character(dat$ENTREZID),
+                   OrgDb         = org.Mm.eg.db,
+                   keyType       = type, 
+                   ont           = hierarchy,
+                   pAdjustMethod = "BH",
+                   pvalueCutoff  = 0.05,
+                   qvalueCutoff  = 0.05,
+                   readable      = TRUE)
+    
+  }
+  
+  write.csv(go@result, filename)
+  return(go@result)
+}
+```
+
+Perform normality tests on modules
+```{r}
+# for PC
+Mod <- read.csv("Kacz_Pear_module_values_T.csv")
+Pheno <- read.csv("ReducedPhenoKey_justCog_strainAverages_allRNA.csv")
+ModPheno <- merge(Pheno, Mod, by.x = "SampleID", by.y = "X")
+
+ModPheno$Genotype <- as.factor(ModPheno$Genotype)
+ModPheno.5XFAD <- ModPheno[which(ModPheno$Genotype == "5"),]
+ModPheno.Ntg <- ModPheno[which(ModPheno$Genotype == "0"),]
+
+library(ggplot2)
+library(ggpubr)
+
+# histograms and Q-Q plots of phenotypes
+# Ymaze 
+ggarrange(ggdensity(ModPheno$Ymaze.SponAlt, 
+                    main = "Ymaze- all",
+                    xlab = "%Spon. Alt"),
+          ggqqplot(ModPheno$Ymaze.SponAlt),
+          
+          ggdensity(ModPheno.5XFAD$Ymaze.SponAlt, 
+                    main = "Ymaze- 5XFAD",
+                    xlab = "%Spon. Alt"),
+          ggqqplot(ModPheno.5XFAD$Ymaze.SponAlt),
+          
+          ggdensity(ModPheno.Ntg$Ymaze.SponAlt, 
+                    main = "Ymaze- Ntg",
+                    xlab = "%Spon. Alt."),
+          ggqqplot(ModPheno.Ntg$Ymaze.SponAlt),
+          ncol = 2, nrow = 3, labels = c("A", "","B", "","C", ""))
+
+# CFA slope
+ggarrange(ggdensity(ModPheno$CFC.AcqSlope, 
+                    main = "CFA Slope- all",
+                    xlab = "CFA Slope"),
+          ggqqplot(ModPheno$CFC.AcqSlope),
+          
+          ggdensity(ModPheno.5XFAD$CFC.AcqSlope, 
+                    main = "CFA Slope- 5XFAD",
+                    xlab = "CFA Slope"),
+          ggqqplot(ModPheno.5XFAD$CFC.AcqSlope),
+          
+          ggdensity(ModPheno.Ntg$CFC.AcqSlope, 
+                    main = "CFA Slope- Ntg",
+                    xlab = "CFA Slope"),
+          ggqqplot(ModPheno.Ntg$CFC.AcqSlope),
+          ncol = 2, nrow = 3, labels = c("A", "","B", "","C", ""))
+
+# CFM
+ggarrange(ggdensity(ModPheno$CFC.CFM, 
+                    main = "CFM- all",
+                    xlab = "%Freezing"),
+          ggqqplot(ModPheno$CFC.CFM),
+          
+          ggdensity(ModPheno.5XFAD$CFC.CFM, 
+                    main = "CFM- 5XFAD",
+                    xlab = "%Freezing"),
+          ggqqplot(ModPheno.5XFAD$CFC.CFM),
+          
+          ggdensity(ModPheno.Ntg$CFC.CFM, 
+                    main = "CFM- Ntg",
+                    xlab = "%Freezing"),
+          ggqqplot(ModPheno.Ntg$CFC.CFM),
+          ncol = 2, nrow = 3, labels = c("A", "","B", "","C", ""))
+
+# histograms of module expression
+ggarrange(ggdensity(ModPheno$m1, 
+                    main = "m1- all",
+                    xlab = "Avg. Exp."),
+          ggqqplot(ModPheno$m1),
+          
+          ggdensity(ModPheno.5XFAD$m1, 
+                    main = "m1- 5XFAD",
+                    xlab = "Avg. Exp."),
+          ggqqplot(ModPheno.5XFAD$m1),
+          
+          ggdensity(ModPheno.Ntg$m1, 
+                    main = "m1- Ntg",
+                    xlab = "Avg. Exp"),
+          ggqqplot(ModPheno.Ntg$m1),
+          ncol = 2, nrow = 3, labels = c("A", "","B", "","C", ""))
+
+```
+
+Perform ANOVA on module expression and/or phenotypes
+```{r}
+mod.exp <- read.csv("Kacz_Pear_module_values_T.csv")
+pheno <- read.csv("ReducedPhenoKey_justCog_strainAverages_allRNA.csv")
+pheno.reduce <- pheno[,c(1:5)]
+mod.pheno <- merge(pheno.reduce, mod.exp, by.x = "SampleID", by.y = "X")
+mod.pheno <- merge(pheno, mod.exp, by.x = "SampleID", by.y = "X")
+
+library(car)
+# will have to edit phenotypes and modules based on what you want to test
+fit.m <- lm(CFC.CFM ~ Genotype + Age + Sex, data = mod.pheno)
+Anova.fit <- Anova(fit.m, type = "II")
+Anova.fit
+Anovafitss <- Anova.fit$`Sum Sq`
+PctExp <- (Anovafitss/sum(Anovafitss) * 100)
+PctExp
+res <- cbind(Anova.fit, PctExp)
+```
+
+Correlate modules to phenotypes
+```{r}
+genes.tpm.byStrain <- read.csv("genesTPM_ComBatCorrected_byStrain_genesymbol.csv")
+SampleID <- as.data.frame(genes.tpm.byStrain$SampleID)
+
+Pearson.mod <- read.csv("Kacz_Pear_module_values_T.csv")
+pheno <- read.csv("ReducedPhenoKey_justCog_strainAverages_allRNA.csv")
+
+Pearson.mod.plusPheno <- merge(pheno, Pearson.mod, by.x = "SampleID", by.y = "X")
+Pearson.mod.plusPheno$Genotype <- as.factor(Pearson.mod.plusPheno$Genotype)
+Pearson.mod.plusPheno$Sex <- as.factor(Pearson.mod.plusPheno$Sex)
+Pearson.mod.AD <-Pearson.mod.plusPheno[which(Pearson.mod.plusPheno$Genotype == "5"),]
+Pearson.mod.Ntg <-Pearson.mod.plusPheno[which(Pearson.mod.plusPheno$Genotype == "0"),]
+Pearson.mod.plusPheno.out <- Pearson.mod.plusPheno[-139,]
+
+## correlate individual phenotypes to modules
+# CFA.Slope 
+cormat <- cor(Pearson.mod.Ntg[,c(8, 10:37)], method = "spearman", use = "complete.obs")
+#CFM 
+cormat <- cor(Pearson.mod.plusPheno[,c(9, 10:37)], method = "spearman", use = "complete.obs")
+#YMaze 
+cormat <- cor(Pearson.mod.plusPheno[,c(6, 10:37)], method = "spearman", use = "complete.obs")
+#CFC.PS4 
+cormat <- cor(Pearson.mod.plusPheno[,c(7, 10:37)], method = "spearman", use = "complete.obs")
+
+install.packages("Hmisc")
+library(Hmisc)
+#need to convert to matrix and associate p-values with correlations
+#CFA Slope 
+cormatrix.p <- rcorr(as.matrix(Pearson.mod.Ntg[,c(8, 10:37)]), type = "spearman")
+#CFM 
+cormatrix.p <- rcorr(as.matrix(Pearson.mod.plusPheno[,c(9, 10:37)]), type = "spearman")
+#YMaze 
+cormatrix.p <- rcorr(as.matrix(Pearson.mod.plusPheno[,c(6, 10:37)]), type = "spearman")
+#CFC.PS4 
+cormatrix.p <- rcorr(as.matrix(Pearson.mod.plusPheno[,c(7, 10:37)]), type = "spearman")
+
+#formatting correlation matrix into 4 columns of data to graph
+# ++++++++++++++++++++++++++++
+# flattenCorrMatrix
+# ++++++++++++++++++++++++++++
+# cormat : matrix of the correlation coefficients
+# pmat : matrix of the correlation p-values
+flattenCorrMatrix <- function(cormat, pmat) {
+  ut <- upper.tri(cormat)
+  data.frame(
+    row = rownames(cormat)[row(cormat)[ut]],
+    column = rownames(cormat)[col(cormat)[ut]],
+    cor = (cormat)[ut],
+    p = pmat[ut]
+  )
+}
+#use flatten function to visualize the formatted correlation matrvaix
+flat.matrix <- flattenCorrMatrix(cormatrix.p$r, cormatrix.p$P)
+write.csv(flat.matrix, file = "SpearmanMods_PS4_SpearmanCorr_SHMods.csv", row.names = FALSE)
+write.csv(flat.matrix, file = "Ntg_CFASlope.csv", row.names = FALSE)
+
+
+# get adjusted pvals
+pvalues <- read.csv("PearsonMods_ModTraitCorr_SpearmanCorr_SHMods.csv")
+pvals.column <- pvalues[,4]
+BH <- p.adjust(pvals.column, "BH", n=length(pvals.column))
+pvalues <- cbind(pvalues, BH)
+write.csv(pvalues , file = "PearsonMods_ModTraitCorr_SpearmanCorr_SHMods_padj.csv", row.names = FALSE)
+
+```
+
+perform linear regression for variance explained
+```{r}
+mod.exp <- read.csv("Kacz_Pear_module_values_T.csv")
+pheno <- read.csv("ReducedPhenoKey_justCog_strainAverages_allRNA.csv")
+mod.pheno <- merge(pheno, mod.exp, by.x = "SampleID", by.y = "X")
+library(car)
+# mfind variance explained- change for phenotype and module
+fit.m2 <- lm(Ymaze.SponAlt ~ m2, data = mod.pheno)
+summary(fit.m2)
+# fitting Type II Anova
+Anova.fit <- Anova(fit.m2, type = "II")
+Anova.fit
+Anovafitss <- Anova.fit$`Sum Sq`
+PctExp <- (Anovafitss/sum(Anovafitss) * 100)
+PctExp
+```
+
+script to perform genetic mapping
+```{r}
+library(qtl)
+ME.mapping <- read.cross(format = c("csv"), dir="~/SE_Code/files/",
+                         genotypes = c("B", "D"), alleles = c("B", "D"), file = "SEmodule_eigengeneMapping.csv")
+
+ME.mapping <- jittermap(ME.mapping)
+ME.mapping <- convert2risib(ME.mapping)
+ME.mapping <- calc.genoprob(ME.mapping, step = 1)
+# change covariates based on ANOVA results for module
+covar <- model.matrix(~Genotype+Age+Sex, data=ME.mapping$pheno)[,-1]
+#covar <- as.matrix(covar)
+
+# map eigengene- change based on which module eigengene you want to map
+MEPC1 <- scanone(ME.mapping, pheno.col = "m7.PC1", method = "hk", addcovar = covar)
+perms.MEPC1 <- scanone(ME.mapping, pheno.col = "PC1", method = "hk", addcovar = covar, n.perm = 1000)
+summary(MEPC1, perms = perms.MEPC1, alpha = 0.05)
+summary(perms.MEPC1)
+plot(MEPC1, ylim = c(0,5))
+add.threshold(MEPC1, perms = perms.MEPC1, alpha = 0.05, lty = 2, col = "red")
+```
+
+convert human to mouse genes
+```{r}
+AmpAD.Modules <- read.csv("AMPAD_Modules_10Jan2019_SynapseDownload.csv")
+SpeakEasy.Human <- read.csv("Mostafavi2018_SpeakEasyModules.csv")
+HumantoMouse <- read.csv("MousetoHuman_MatchedIDs_ALL.csv")
+
+AmpAD.HumanMouse.1 <- merge(HumantoMouse, AmpAD.Modules, by.x = "Gene.stable.ID", by.y = "GeneID")
+write.csv(AmpAD.HumanMouse, file = "AMPADModules_HumanplusMouseGenes.csv", row.names = FALSE)
+
+library(biomaRt)
+ensembl <- useMart("ensembl", dataset = "hsapiens_gene_ensembl")
+human_gene_ids <- SpeakEasy.Human$Gene.Symbol
+convert <- getBM(attributes = c('ensembl_gene_id', 'external_gene_name'), filters = 'hgnc_symbol',
+                 values = human_gene_ids,
+                 mart = ensembl)
+write.csv(convert, file = "SpeakEasy_Mostafavi_Ensemble.csv")
+SpeakEasyGenes_ensembl <- read.csv("Mostafavi_SpeakEasy/SpeakEasy_Mostafavi_Ensemble.csv")
+SpeakEasyGenes_ensembl$ensembl_gene_id
+Mostafavi.HumanMouse <- merge(HumantoMouse, SpeakEasyGenes_ensembl, by.x = "Gene.stable.ID", by.y = "ensembl_gene_id")
+SpeakEasyplusmouse <- merge(SpeakEasy.Human, Mostafavi.HumanMouse, by.x = "Gene.Symbol", by.y = "external_gene_name")
+write.csv(SpeakEasyplusmouse, file = "Mostafavi2018_SpeakEasyModules_HumantoMousegenes.csv", row.names = FALSE)
+```
+
+
+test mouse to human conservation- mostafavi
+```{r}
+#load human modules
+HumanMods.SpeakEasy <- read.csv("Mostafavi2018_SpeakEasyModules_HumantoMousegenes_unique.csv")
+HumanMods.SpeakEasy <- HumanMods.SpeakEasy[,c(2,3)]
+# separate out human modules into individual data frames
+m1.h <- HumanMods.SpeakEasy[which(HumanMods.SpeakEasy$Module.ID == "m1.h"),]
+m2.h <- HumanMods.SpeakEasy[which(HumanMods.SpeakEasy$Module.ID == "m2.h"),]
+m3.h <- HumanMods.SpeakEasy[which(HumanMods.SpeakEasy$Module.ID == "m3.h"),]
+m4.h <- HumanMods.SpeakEasy[which(HumanMods.SpeakEasy$Module.ID == "m4.h"),]
+m5.h <- HumanMods.SpeakEasy[which(HumanMods.SpeakEasy$Module.ID == "m5.h"),]
+m6.h <- HumanMods.SpeakEasy[which(HumanMods.SpeakEasy$Module.ID == "m6.h"),]
+m7.h <- HumanMods.SpeakEasy[which(HumanMods.SpeakEasy$Module.ID == "m7.h"),]
+m8.h <- HumanMods.SpeakEasy[which(HumanMods.SpeakEasy$Module.ID == "m8.h"),]
+m9.h <- HumanMods.SpeakEasy[which(HumanMods.SpeakEasy$Module.ID == "m9.h"),]
+m10.h <- HumanMods.SpeakEasy[which(HumanMods.SpeakEasy$Module.ID == "m10.h"),]
+m11.h <- HumanMods.SpeakEasy[which(HumanMods.SpeakEasy$Module.ID == "m11.h"),]
+m12.h <- HumanMods.SpeakEasy[which(HumanMods.SpeakEasy$Module.ID == "m12.h"),]
+m13.h <- HumanMods.SpeakEasy[which(HumanMods.SpeakEasy$Module.ID == "m13.h"),]
+m14.h <- HumanMods.SpeakEasy[which(HumanMods.SpeakEasy$Module.ID == "m14.h"),]
+m16.h <- HumanMods.SpeakEasy[which(HumanMods.SpeakEasy$Module.ID == "m16.h"),]
+m17.h <- HumanMods.SpeakEasy[which(HumanMods.SpeakEasy$Module.ID == "m17.h"),]
+m18.h <- HumanMods.SpeakEasy[which(HumanMods.SpeakEasy$Module.ID == "m18.h"),]
+m19.h <- HumanMods.SpeakEasy[which(HumanMods.SpeakEasy$Module.ID == "m19.h"),]
+m21.h <- HumanMods.SpeakEasy[which(HumanMods.SpeakEasy$Module.ID == "m21.h"),]
+m22.h <- HumanMods.SpeakEasy[which(HumanMods.SpeakEasy$Module.ID == "m22.h"),]
+m23.h <- HumanMods.SpeakEasy[which(HumanMods.SpeakEasy$Module.ID == "m23.h"),]
+m106.h <- HumanMods.SpeakEasy[which(HumanMods.SpeakEasy$Module.ID == "m106.h"),]
+m107.h <- HumanMods.SpeakEasy[which(HumanMods.SpeakEasy$Module.ID == "m107.h"),]
+m108.h <- HumanMods.SpeakEasy[which(HumanMods.SpeakEasy$Module.ID == "m108.h"),]
+m109.h <- HumanMods.SpeakEasy[which(HumanMods.SpeakEasy$Module.ID == "m109.h"),]
+m110.h <- HumanMods.SpeakEasy[which(HumanMods.SpeakEasy$Module.ID == "m110.h"),]
+m111.h <- HumanMods.SpeakEasy[which(HumanMods.SpeakEasy$Module.ID == "m111.h"),]
+m112.h <- HumanMods.SpeakEasy[which(HumanMods.SpeakEasy$Module.ID == "m112.h"),]
+m113.h <- HumanMods.SpeakEasy[which(HumanMods.SpeakEasy$Module.ID == "m113.h"),]
+m114.h <- HumanMods.SpeakEasy[which(HumanMods.SpeakEasy$Module.ID == "m114.h"),]
+m115.h <- HumanMods.SpeakEasy[which(HumanMods.SpeakEasy$Module.ID == "m115.h"),]
+m116.h <- HumanMods.SpeakEasy[which(HumanMods.SpeakEasy$Module.ID == "m116.h"),]
+m117.h <- HumanMods.SpeakEasy[which(HumanMods.SpeakEasy$Module.ID == "m117.h"),]
+m118.h <- HumanMods.SpeakEasy[which(HumanMods.SpeakEasy$Module.ID == "m118.h"),]
+m119.h <- HumanMods.SpeakEasy[which(HumanMods.SpeakEasy$Module.ID == "m119.h"),]
+m121.h <- HumanMods.SpeakEasy[which(HumanMods.SpeakEasy$Module.ID == "m121.h"),]
+m122.h <- HumanMods.SpeakEasy[which(HumanMods.SpeakEasy$Module.ID == "m122.h"),]
+m123.h <- HumanMods.SpeakEasy[which(HumanMods.SpeakEasy$Module.ID == "m123.h"),]
+m125.h <- HumanMods.SpeakEasy[which(HumanMods.SpeakEasy$Module.ID == "m125.h"),]
+m126.h <- HumanMods.SpeakEasy[which(HumanMods.SpeakEasy$Module.ID == "m126.h"),]
+m127.h <- HumanMods.SpeakEasy[which(HumanMods.SpeakEasy$Module.ID == "m127.h"),]
+m128.h <- HumanMods.SpeakEasy[which(HumanMods.SpeakEasy$Module.ID == "m128.h"),]
+m131.h <- HumanMods.SpeakEasy[which(HumanMods.SpeakEasy$Module.ID == "m131.h"),]
+m187.h <- HumanMods.SpeakEasy[which(HumanMods.SpeakEasy$Module.ID == "m187.h"),]
+m233.h <- HumanMods.SpeakEasy[which(HumanMods.SpeakEasy$Module.ID == "m233.h"),]
+m234.h <- HumanMods.SpeakEasy[which(HumanMods.SpeakEasy$Module.ID == "m234.h"),]
+m257.h <- HumanMods.SpeakEasy[which(HumanMods.SpeakEasy$Module.ID == "m257.h"),]
+
+#load mouse modules
+# for PC at work
+MouseMods <- read.csv("C:/Users/heuers/Box Sync/Kaz lab team folder/Heuer/SpeakEasy/Rd1Rd1_CGReplication/Kacz_Pear_cluster_assignments_ONLY28Mod.csv")
+# separate out mouse modules into individual data frames
+m1 <- MouseMods[which(MouseMods$cluster == "1"),]
+m2 <- MouseMods[which(MouseMods$cluster == "2"),]
+m3 <- MouseMods[which(MouseMods$cluster == "3"),]
+m4 <- MouseMods[which(MouseMods$cluster == "4"),]
+m5 <- MouseMods[which(MouseMods$cluster == "5"),]
+m6 <- MouseMods[which(MouseMods$cluster == "6"),]
+m7 <- MouseMods[which(MouseMods$cluster == "7"),]
+m8 <- MouseMods[which(MouseMods$cluster == "8"),]
+m9 <- MouseMods[which(MouseMods$cluster == "9"),]
+m10 <- MouseMods[which(MouseMods$cluster == "10"),]
+m11 <- MouseMods[which(MouseMods$cluster == "11"),]
+m12 <- MouseMods[which(MouseMods$cluster == "12"),]
+m13 <- MouseMods[which(MouseMods$cluster == "13"),]
+m14 <- MouseMods[which(MouseMods$cluster == "14"),]
+m15 <- MouseMods[which(MouseMods$cluster == "15"),]
+m16 <- MouseMods[which(MouseMods$cluster == "16"),]
+m17 <- MouseMods[which(MouseMods$cluster == "17"),]
+m18 <- MouseMods[which(MouseMods$cluster == "18"),]
+m19 <- MouseMods[which(MouseMods$cluster == "19"),]
+m20 <- MouseMods[which(MouseMods$cluster == "20"),]
+m21 <- MouseMods[which(MouseMods$cluster == "21"),]
+m22 <- MouseMods[which(MouseMods$cluster == "22"),]
+m23 <- MouseMods[which(MouseMods$cluster == "23"),]
+m24 <- MouseMods[which(MouseMods$cluster == "24"),]
+m25 <- MouseMods[which(MouseMods$cluster == "25"),]
+m26 <- MouseMods[which(MouseMods$cluster == "26"),]
+m27 <- MouseMods[which(MouseMods$cluster == "27"),]
+m28 <- MouseMods[which(MouseMods$cluster == "28"),]
+
+#define significance of enrichment given gene lists
+#use phyper
+#q = size of overlap-1
+#m = number of unique genes in mouse module (sample 1)
+#n = total number of genes that can be found in any human or mouse module (populations size) - m
+#k = number of genes in human module (sample 2)
+#lower.tail = FALSE,
+#log.p = FALSE
+
+# total unique genes found in ANY human module- 10596
+# total unique genes found in ANY mouse module- 21511
+#Human.genes <- as.data.frame(HumanMods.SpeakEasy$Mouse.gene.name)
+#colnames(Human.genes)[1] <- "gene"
+#Mouse.genes <- as.data.frame(MouseMods$gene)
+#colnames(Mouse.genes)[1] <- "gene"
+#HumanMouse.ModGenes <- as.data.frame(rbind(Human.genes, Mouse.genes))
+#length(unique(HumanMouse.ModGenes$gene))
+## total unique genes found in ANY human OR mouse module- 21720
+
+# find intersect between each mouse module for each human module
+q = as.numeric(length(intersect(m1.h$Mouse.gene.name, m6$gene)) - 1) 
+m = as.numeric(length(unique(m6$gene))) 
+n = as.numeric(21720 - m) 
+k = as.numeric(length(unique(m1.h$Mouse.gene.name))) 
+m1h.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+
+q = as.numeric(length(intersect(m2.h$Mouse.gene.name, m6$gene)) - 1) 
+m = as.numeric(length(unique(m6$gene))) 
+n = as.numeric(21720 - m) 
+k = as.numeric(length(unique(m2.h$Mouse.gene.name))) 
+m2h.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+
+q = as.numeric(length(intersect(m3.h$Mouse.gene.name, m6$gene)) - 1) 
+m = as.numeric(length(unique(m6$gene))) 
+n = as.numeric(21720 - m) 
+k = as.numeric(length(unique(m3.h$Mouse.gene.name))) 
+m3h.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+
+q = as.numeric(length(intersect(m4.h$Mouse.gene.name, m6$gene)) - 1) 
+m = as.numeric(length(unique(m6$gene))) 
+n = as.numeric(21720 - m) 
+k = as.numeric(length(unique(m4.h$Mouse.gene.name))) 
+m4h.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+
+q = as.numeric(length(intersect(m5.h$Mouse.gene.name, m6$gene)) - 1) 
+m = as.numeric(length(unique(m6$gene))) 
+n = as.numeric(21720 - m) 
+k = as.numeric(length(unique(m5.h$Mouse.gene.name))) 
+m5h.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+
+q = as.numeric(length(intersect(m6.h$Mouse.gene.name, m6$gene)) - 1) 
+m = as.numeric(length(unique(m6$gene))) 
+n = as.numeric(21720 - m) 
+k = as.numeric(length(unique(m6.h$Mouse.gene.name))) 
+m6h.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+
+q = as.numeric(length(intersect(m7.h$Mouse.gene.name, m6$gene)) - 1) 
+m = as.numeric(length(unique(m6$gene))) 
+n = as.numeric(21720 - m) 
+k = as.numeric(length(unique(m7.h$Mouse.gene.name))) 
+m7h.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+
+q = as.numeric(length(intersect(m8.h$Mouse.gene.name, m6$gene)) - 1) 
+m = as.numeric(length(unique(m6$gene))) 
+n = as.numeric(21720 - m) 
+k = as.numeric(length(unique(m8.h$Mouse.gene.name))) 
+m8h.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+
+q = as.numeric(length(intersect(m9.h$Mouse.gene.name, m6$gene)) - 1) 
+m = as.numeric(length(unique(m6$gene))) 
+n = as.numeric(21720 - m) 
+k = as.numeric(length(unique(m9.h$Mouse.gene.name))) 
+m9h.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+
+q = as.numeric(length(intersect(m10.h$Mouse.gene.name, m6$gene)) - 1) 
+m = as.numeric(length(unique(m6$gene))) 
+n = as.numeric(21720 - m) 
+k = as.numeric(length(unique(m10.h$Mouse.gene.name))) 
+m10h.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+
+q = as.numeric(length(intersect(m11.h$Mouse.gene.name, m6$gene)) - 1) 
+m = as.numeric(length(unique(m6$gene))) 
+n = as.numeric(21720 - m) 
+k = as.numeric(length(unique(m11.h$Mouse.gene.name))) 
+m11h.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+
+q = as.numeric(length(intersect(m12.h$Mouse.gene.name, m6$gene)) - 1) 
+m = as.numeric(length(unique(m6$gene))) 
+n = as.numeric(21720 - m) 
+k = as.numeric(length(unique(m12.h$Mouse.gene.name))) 
+m12h.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+
+q = as.numeric(length(intersect(m13.h$Mouse.gene.name, m6$gene)) - 1) 
+m = as.numeric(length(unique(m6$gene))) 
+n = as.numeric(21720 - m) 
+k = as.numeric(length(unique(m13.h$Mouse.gene.name))) 
+m13h.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+
+q = as.numeric(length(intersect(m14.h$Mouse.gene.name, m6$gene)) - 1) 
+m = as.numeric(length(unique(m6$gene))) 
+n = as.numeric(21720 - m) 
+k = as.numeric(length(unique(m14.h$Mouse.gene.name))) 
+m14h.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+
+q = as.numeric(length(intersect(m16.h$Mouse.gene.name, m6$gene)) - 1) 
+m = as.numeric(length(unique(m6$gene))) 
+n = as.numeric(21720 - m) 
+k = as.numeric(length(unique(m16.h$Mouse.gene.name))) 
+m16h.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+
+q = as.numeric(length(intersect(m17.h$Mouse.gene.name, m6$gene)) - 1) 
+m = as.numeric(length(unique(m6$gene))) 
+n = as.numeric(21720 - m) 
+k = as.numeric(length(unique(m17.h$Mouse.gene.name))) 
+m17h.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+
+q = as.numeric(length(intersect(m18.h$Mouse.gene.name, m6$gene)) - 1) 
+m = as.numeric(length(unique(m6$gene))) 
+n = as.numeric(21720 - m) 
+k = as.numeric(length(unique(m18.h$Mouse.gene.name))) 
+m18h.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+
+q = as.numeric(length(intersect(m19.h$Mouse.gene.name, m6$gene)) - 1) 
+m = as.numeric(length(unique(m6$gene))) 
+n = as.numeric(21720 - m) 
+k = as.numeric(length(unique(m19.h$Mouse.gene.name))) 
+m19h.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+
+q = as.numeric(length(intersect(m21.h$Mouse.gene.name, m6$gene)) - 1) 
+m = as.numeric(length(unique(m6$gene))) 
+n = as.numeric(21720 - m) 
+k = as.numeric(length(unique(m21.h$Mouse.gene.name))) 
+m21h.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+
+q = as.numeric(length(intersect(m22.h$Mouse.gene.name, m6$gene)) - 1) 
+m = as.numeric(length(unique(m6$gene))) 
+n = as.numeric(21720 - m) 
+k = as.numeric(length(unique(m22.h$Mouse.gene.name))) 
+m22h.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+
+q = as.numeric(length(intersect(m23.h$Mouse.gene.name, m6$gene)) - 1) 
+m = as.numeric(length(unique(m6$gene))) 
+n = as.numeric(21720 - m) 
+k = as.numeric(length(unique(m23.h$Mouse.gene.name))) 
+m23h.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+
+q = as.numeric(length(intersect(m106.h$Mouse.gene.name, m6$gene)) - 1) 
+m = as.numeric(length(unique(m6$gene))) 
+n = as.numeric(21720 - m) 
+k = as.numeric(length(unique(m106.h$Mouse.gene.name))) 
+m106h.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+
+q = as.numeric(length(intersect(m107.h$Mouse.gene.name, m6$gene)) - 1) 
+m = as.numeric(length(unique(m6$gene))) 
+n = as.numeric(21720 - m) 
+k = as.numeric(length(unique(m107.h$Mouse.gene.name))) 
+m107h.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+
+q = as.numeric(length(intersect(m108.h$Mouse.gene.name, m6$gene)) - 1) 
+m = as.numeric(length(unique(m6$gene))) 
+n = as.numeric(21720 - m) 
+k = as.numeric(length(unique(m108.h$Mouse.gene.name))) 
+m108h.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+
+q = as.numeric(length(intersect(m109.h$Mouse.gene.name, m6$gene)) - 1) 
+m = as.numeric(length(unique(m6$gene))) 
+n = as.numeric(21720 - m) 
+k = as.numeric(length(unique(m109.h$Mouse.gene.name))) 
+m109h.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+
+q = as.numeric(length(intersect(m110.h$Mouse.gene.name, m6$gene)) - 1) 
+m = as.numeric(length(unique(m6$gene))) 
+n = as.numeric(21720 - m) 
+k = as.numeric(length(unique(m110.h$Mouse.gene.name))) 
+m110h.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+
+q = as.numeric(length(intersect(m111.h$Mouse.gene.name, m6$gene)) - 1) 
+m = as.numeric(length(unique(m6$gene))) 
+n = as.numeric(21720 - m) 
+k = as.numeric(length(unique(m111.h$Mouse.gene.name))) 
+m111h.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+
+q = as.numeric(length(intersect(m112.h$Mouse.gene.name, m6$gene)) - 1) 
+m = as.numeric(length(unique(m6$gene))) 
+n = as.numeric(21720 - m) 
+k = as.numeric(length(unique(m112.h$Mouse.gene.name))) 
+m112h.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+
+q = as.numeric(length(intersect(m113.h$Mouse.gene.name, m6$gene)) - 1) 
+m = as.numeric(length(unique(m6$gene))) 
+n = as.numeric(21720 - m) 
+k = as.numeric(length(unique(m113.h$Mouse.gene.name))) 
+m113h.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+
+q = as.numeric(length(intersect(m114.h$Mouse.gene.name, m6$gene)) - 1) 
+m = as.numeric(length(unique(m6$gene))) 
+n = as.numeric(21720 - m) 
+k = as.numeric(length(unique(m114.h$Mouse.gene.name))) 
+m114h.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+
+q = as.numeric(length(intersect(m115.h$Mouse.gene.name, m6$gene)) - 1) 
+m = as.numeric(length(unique(m6$gene))) 
+n = as.numeric(21720 - m) 
+k = as.numeric(length(unique(m115.h$Mouse.gene.name))) 
+m115h.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+
+q = as.numeric(length(intersect(m116.h$Mouse.gene.name, m6$gene)) - 1) 
+m = as.numeric(length(unique(m6$gene))) 
+n = as.numeric(21720 - m) 
+k = as.numeric(length(unique(m116.h$Mouse.gene.name))) 
+m116h.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+
+q = as.numeric(length(intersect(m117.h$Mouse.gene.name, m6$gene)) - 1) 
+m = as.numeric(length(unique(m6$gene))) 
+n = as.numeric(21720 - m) 
+k = as.numeric(length(unique(m117.h$Mouse.gene.name))) 
+m117h.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+
+q = as.numeric(length(intersect(m118.h$Mouse.gene.name, m6$gene)) - 1) 
+m = as.numeric(length(unique(m6$gene))) 
+n = as.numeric(21720 - m) 
+k = as.numeric(length(unique(m118.h$Mouse.gene.name))) 
+m118h.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+
+q = as.numeric(length(intersect(m119.h$Mouse.gene.name, m6$gene)) - 1) 
+m = as.numeric(length(unique(m6$gene))) 
+n = as.numeric(21720 - m) 
+k = as.numeric(length(unique(m119.h$Mouse.gene.name))) 
+m119h.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+
+q = as.numeric(length(intersect(m121.h$Mouse.gene.name, m6$gene)) - 1) 
+m = as.numeric(length(unique(m6$gene))) 
+n = as.numeric(21720 - m) 
+k = as.numeric(length(unique(m121.h$Mouse.gene.name))) 
+m121h.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+
+q = as.numeric(length(intersect(m122.h$Mouse.gene.name, m6$gene)) - 1) 
+m = as.numeric(length(unique(m6$gene))) 
+n = as.numeric(21720 - m) 
+k = as.numeric(length(unique(m122.h$Mouse.gene.name))) 
+m122h.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+
+q = as.numeric(length(intersect(m123.h$Mouse.gene.name, m6$gene)) - 1) 
+m = as.numeric(length(unique(m6$gene))) 
+n = as.numeric(21720 - m) 
+k = as.numeric(length(unique(m123.h$Mouse.gene.name))) 
+m123h.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+
+q = as.numeric(length(intersect(m125.h$Mouse.gene.name, m6$gene)) - 1) 
+m = as.numeric(length(unique(m6$gene))) 
+n = as.numeric(21720 - m) 
+k = as.numeric(length(unique(m125.h$Mouse.gene.name))) 
+m125h.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+
+q = as.numeric(length(intersect(m126.h$Mouse.gene.name, m6$gene)) - 1) 
+m = as.numeric(length(unique(m6$gene))) 
+n = as.numeric(21720 - m) 
+k = as.numeric(length(unique(m126.h$Mouse.gene.name))) 
+m126h.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+
+q = as.numeric(length(intersect(m127.h$Mouse.gene.name, m6$gene)) - 1) 
+m = as.numeric(length(unique(m6$gene))) 
+n = as.numeric(21720 - m) 
+k = as.numeric(length(unique(m127.h$Mouse.gene.name))) 
+m127h.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+
+q = as.numeric(length(intersect(m128.h$Mouse.gene.name, m6$gene)) - 1) 
+m = as.numeric(length(unique(m6$gene))) 
+n = as.numeric(21720 - m) 
+k = as.numeric(length(unique(m128.h$Mouse.gene.name))) 
+m128h.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+
+q = as.numeric(length(intersect(m131.h$Mouse.gene.name, m6$gene)) - 1) 
+m = as.numeric(length(unique(m6$gene))) 
+n = as.numeric(21720 - m) 
+k = as.numeric(length(unique(m131.h$Mouse.gene.name))) 
+m131h.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+
+q = as.numeric(length(intersect(m187.h$Mouse.gene.name, m6$gene)) - 1) 
+m = as.numeric(length(unique(m6$gene))) 
+n = as.numeric(21720 - m) 
+k = as.numeric(length(unique(m187.h$Mouse.gene.name))) 
+m187h.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+
+q = as.numeric(length(intersect(m233.h$Mouse.gene.name, m6$gene)) - 1) 
+m = as.numeric(length(unique(m6$gene))) 
+n = as.numeric(21720 - m) 
+k = as.numeric(length(unique(m233.h$Mouse.gene.name))) 
+m233h.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+
+q = as.numeric(length(intersect(m234.h$Mouse.gene.name, m6$gene)) - 1) 
+m = as.numeric(length(unique(m6$gene))) 
+n = as.numeric(21720 - m) 
+k = as.numeric(length(unique(m234.h$Mouse.gene.name))) 
+m234h.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+
+q = as.numeric(length(intersect(m257.h$Mouse.gene.name, m6$gene)) - 1) 
+m = as.numeric(length(unique(m6$gene))) 
+n = as.numeric(21720 - m) 
+k = as.numeric(length(unique(m257.h$Mouse.gene.name))) 
+m257h.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+
+hyper.mouseMods <- rbind(m1h.p, m2h.p, m3h.p, m4h.p, m5h.p, m6h.p, m7h.p, m8h.p, m9h.p, m10h.p, m11h.p,
+                         m12h.p, m13h.p, m14h.p, m16h.p, m17h.p, m18h.p, m19h.p, m21h.p, m22h.p, m23h.p, m106h.p,
+                         m107h.p, m108h.p, m109h.p, m110h.p, m111h.p, m112h.p, m113h.p, m114h.p, m115h.p,
+                         m116h.p, m117h.p, m118h.p, m119h.p, m121h.p, m122h.p, m123h.p, m125h.p, m126h.p,
+                         m127h.p, m128h.p, m131h.p, m187h.p, m233h.p, m234h.p, m257h.p)
+write.csv(hyper.mouseMods, file = "Results.csv")
+
+
+############################################
+# get adjusted pvals
+library(readr)
+pvalues <- read.csv("HumantoMouse_MostafaviMods_pvals.csv")
+pvals.column <- pvalues[,3]
+BH <- p.adjust(pvals.column, "BH", n=length(pvals.column))
+pvalues <- cbind(pvalues, BH)
+write.csv(pvalues , file = "HumantoMouse_MostafaviMods_padj.csv", row.names = FALSE)
+
+```
+
+mouse to human- AMP-AD modules
+```{r}
+#load human modules
+HumanMods <- read.csv("AMPADModules_HumanplusMouseGenes.csv")
+HumanMods.condense <- HumanMods[,c(4,8)]
+# separate out human modules into individual data frames
+DLPFCturquoise <- HumanMods.condense[which(HumanMods.condense$Module == "DLPFCturquoise"),]
+DLPFCblue <- HumanMods.condense[which(HumanMods.condense$Module == "DLPFCblue"),]
+DLPFCbrown <- HumanMods.condense[which(HumanMods.condense$Module == "DLPFCbrown"),]
+DLPFCyellow <- HumanMods.condense[which(HumanMods.condense$Module == "DLPFCyellow"),]
+CBEturquoise <- HumanMods.condense[which(HumanMods.condense$Module == "CBEturquoise"),]
+CBEblue <- HumanMods.condense[which(HumanMods.condense$Module == "CBEblue"),]
+CBEbrown <- HumanMods.condense[which(HumanMods.condense$Module == "CBEbrown"),]
+CBEyellow <- HumanMods.condense[which(HumanMods.condense$Module == "CBEyellow"),]
+TCXturquoise <- HumanMods.condense[which(HumanMods.condense$Module == "TCXturquoise"),]
+TCXblue <- HumanMods.condense[which(HumanMods.condense$Module == "TCXblue"),]
+TCXbrown <- HumanMods.condense[which(HumanMods.condense$Module == "TCXbrown"),]
+TCXyellow <- HumanMods.condense[which(HumanMods.condense$Module == "TCXyellow"),]
+TCXgreen <- HumanMods.condense[which(HumanMods.condense$Module == "TCXgreen"),]
+IFGturquoise <- HumanMods.condense[which(HumanMods.condense$Module == "IFGturquoise"),]
+IFGblue <- HumanMods.condense[which(HumanMods.condense$Module == "IFGblue"),]
+IFGbrown <- HumanMods.condense[which(HumanMods.condense$Module == "IFGbrown"),]
+IFGyellow <- HumanMods.condense[which(HumanMods.condense$Module == "IFGyellow"),]
+STGturquoise <- HumanMods.condense[which(HumanMods.condense$Module == "STGturquoise"),]
+STGblue <- HumanMods.condense[which(HumanMods.condense$Module == "STGblue"),]
+STGbrown <- HumanMods.condense[which(HumanMods.condense$Module == "STGbrown"),]
+STGyellow <- HumanMods.condense[which(HumanMods.condense$Module == "STGyellow"),]
+PHGturquoise <- HumanMods.condense[which(HumanMods.condense$Module == "PHGturquoise"),]
+PHGblue <- HumanMods.condense[which(HumanMods.condense$Module == "PHGblue"),]
+PHGbrown <- HumanMods.condense[which(HumanMods.condense$Module == "PHGbrown"),]
+PHGyellow <- HumanMods.condense[which(HumanMods.condense$Module == "PHGyellow"),]
+PHGgreen <- HumanMods.condense[which(HumanMods.condense$Module == "PHGgreen"),]
+FPturquoise <- HumanMods.condense[which(HumanMods.condense$Module == "FPturquoise"),]
+FPblue <- HumanMods.condense[which(HumanMods.condense$Module == "FPblue"),]
+FPbrown <- HumanMods.condense[which(HumanMods.condense$Module == "FPbrown"),]
+FPyellow <- HumanMods.condense[which(HumanMods.condense$Module == "FPyellow"),]
+
+#load mouse modules
+MouseMods <- read.csv("~/Box/Kaz lab team folder/Heuer/SpeakEasy/Rd1Rd1_CGReplication/Kacz_Pear_cluster_assignments_ONLY28Mod.csv")
+
+# separate out mouse modules into individual data frames
+m1 <- MouseMods[which(MouseMods$cluster == "1"),]
+m2 <- MouseMods[which(MouseMods$cluster == "2"),]
+m3 <- MouseMods[which(MouseMods$cluster == "3"),]
+m4 <- MouseMods[which(MouseMods$cluster == "4"),]
+m5 <- MouseMods[which(MouseMods$cluster == "5"),]
+m6 <- MouseMods[which(MouseMods$cluster == "6"),]
+m7 <- MouseMods[which(MouseMods$cluster == "7"),]
+m8 <- MouseMods[which(MouseMods$cluster == "8"),]
+m9 <- MouseMods[which(MouseMods$cluster == "9"),]
+m10 <- MouseMods[which(MouseMods$cluster == "10"),]
+m11 <- MouseMods[which(MouseMods$cluster == "11"),]
+m12 <- MouseMods[which(MouseMods$cluster == "12"),]
+m13 <- MouseMods[which(MouseMods$cluster == "13"),]
+m14 <- MouseMods[which(MouseMods$cluster == "14"),]
+m15 <- MouseMods[which(MouseMods$cluster == "15"),]
+m16 <- MouseMods[which(MouseMods$cluster == "16"),]
+m17 <- MouseMods[which(MouseMods$cluster == "17"),]
+m18 <- MouseMods[which(MouseMods$cluster == "18"),]
+m19 <- MouseMods[which(MouseMods$cluster == "19"),]
+m20 <- MouseMods[which(MouseMods$cluster == "20"),]
+m21 <- MouseMods[which(MouseMods$cluster == "21"),]
+m22 <- MouseMods[which(MouseMods$cluster == "22"),]
+m23 <- MouseMods[which(MouseMods$cluster == "23"),]
+m24 <- MouseMods[which(MouseMods$cluster == "24"),]
+m25 <- MouseMods[which(MouseMods$cluster == "25"),]
+m26 <- MouseMods[which(MouseMods$cluster == "26"),]
+m27 <- MouseMods[which(MouseMods$cluster == "27"),]
+m28 <- MouseMods[which(MouseMods$cluster == "28"),]
+
+
+#define significance of enrichment given gene lists
+#use phyper
+#q = size of overlap-1
+#m = number of unique genes in mouse module (sample 1)
+#n = total number of genes that can be found in any human or mouse module (populations size) - m
+#k = number of genes in human module (sample 2)
+#lower.tail = FALSE,
+#log.p = FALSE
+
+# total unique genes found in ANY human module- 13220
+# total unique genes found in ANY mouse module- 21511
+#Human.genes <- as.data.frame(HumanMods.condense$Mouse.gene.name)
+#colnames(Human.genes)[1] <- "gene"
+#Mouse.genes <- as.data.frame(MouseMods$gene)
+#colnames(Mouse.genes)[1] <- "gene"
+#HumanMouse.ModGenes <- as.data.frame(rbind(Human.genes, Mouse.genes))
+#length(unique(HumanMouse.ModGenes$gene))
+## total unique genes found in ANY human OR mouse module- 22367
+
+# find intersect between each mouse module for each human module
+#mouse module to DLPFCturquoise
+q = as.numeric(length(intersect(m1$gene, DLPFCturquoise$Mouse.gene.name)) - 1) 
+m = as.numeric(length(unique(m1$gene))) 
+n = as.numeric(22367 - m) 
+k = as.numeric(length(unique(DLPFCturquoise$Mouse.gene.name))) 
+DLPFCturquoise.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+
+#mouse module to DLPFCblue
+q = as.numeric(length(intersect(m1$gene, DLPFCblue$Mouse.gene.name)) - 1) 
+m = as.numeric(length(unique(m1$gene))) 
+n = as.numeric(22367 - m) 
+k = as.numeric(length(unique(DLPFCblue$Mouse.gene.name))) 
+DLPFCblue.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+
+#mouse module to DLPFCbrown
+q = as.numeric(length(intersect(m1$gene, DLPFCbrown$Mouse.gene.name)) - 1) 
+m = as.numeric(length(unique(m1$gene))) 
+n = as.numeric(22367 - m) 
+k = as.numeric(length(unique(DLPFCbrown$Mouse.gene.name))) 
+DLPFCbrown.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+
+#mouse module to DLPFCyellow
+q = as.numeric(length(intersect(m1$gene, DLPFCyellow$Mouse.gene.name)) - 1) 
+m = as.numeric(length(unique(m1$gene))) 
+n = as.numeric(22367 - m) 
+k = as.numeric(length(unique(DLPFCyellow$Mouse.gene.name))) 
+DLPFCyellow.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+
+
+#mouse module to CBEturquoise
+q = as.numeric(length(intersect(m1$gene, CBEturquoise$Mouse.gene.name)) - 1) 
+m = as.numeric(length(unique(m1$gene))) 
+n = as.numeric(22367 - m) 
+k = as.numeric(length(unique(CBEturquoise$Mouse.gene.name))) 
+CBEturquoise.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+
+#mouse module to CBEblue
+q = as.numeric(length(intersect(m1$gene, CBEblue$Mouse.gene.name)) - 1) 
+m = as.numeric(length(unique(m1$gene))) 
+n = as.numeric(22367 - m) 
+k = as.numeric(length(unique(CBEblue$Mouse.gene.name))) 
+CBEblue.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+
+#mouse module to CBEbrown
+q = as.numeric(length(intersect(m1$gene, CBEbrown$Mouse.gene.name)) - 1) 
+m = as.numeric(length(unique(m1$gene))) 
+n = as.numeric(22367 - m) 
+k = as.numeric(length(unique(CBEbrown$Mouse.gene.name))) 
+CBEbrown.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+
+#mouse module to CBEyellow
+q = as.numeric(length(intersect(m1$gene, CBEyellow$Mouse.gene.name)) - 1) 
+m = as.numeric(length(unique(m1$gene))) 
+n = as.numeric(22367 - m) 
+k = as.numeric(length(unique(CBEyellow$Mouse.gene.name))) 
+CBEyellow.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+
+
+#mouse module to TCXturquoise
+q = as.numeric(length(intersect(m1$gene, TCXturquoise$Mouse.gene.name)) - 1) 
+m = as.numeric(length(unique(m1$gene))) 
+n = as.numeric(22367 - m) 
+k = as.numeric(length(unique(TCXturquoise$Mouse.gene.name))) 
+TCXturquoise.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+
+#mouse module to TCXblue
+q = as.numeric(length(intersect(m1$gene, TCXblue$Mouse.gene.name)) - 1) 
+m = as.numeric(length(unique(m1$gene))) 
+n = as.numeric(22367 - m) 
+k = as.numeric(length(unique(TCXblue$Mouse.gene.name))) 
+TCXblue.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+
+#mouse module to TCXbrown
+q = as.numeric(length(intersect(m1$gene, TCXbrown$Mouse.gene.name)) - 1) 
+m = as.numeric(length(unique(m1$gene))) 
+n = as.numeric(22367 - m) 
+k = as.numeric(length(unique(TCXbrown$Mouse.gene.name))) 
+TCXbrown.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+
+#mouse module to TCXyellow
+q = as.numeric(length(intersect(m1$gene, TCXyellow$Mouse.gene.name)) - 1) 
+m = as.numeric(length(unique(m1$gene))) 
+n = as.numeric(22367 - m) 
+k = as.numeric(length(unique(TCXyellow$Mouse.gene.name))) 
+TCXyellow.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+
+#mouse module to TCXgreen
+q = as.numeric(length(intersect(m1$gene, TCXgreen$Mouse.gene.name)) - 1) 
+m = as.numeric(length(unique(m1$gene))) 
+n = as.numeric(22367 - m) 
+k = as.numeric(length(unique(TCXgreen$Mouse.gene.name))) 
+TCXgreen.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+
+
+#mouse module to IFGturquoise
+q = as.numeric(length(intersect(m1$gene, IFGturquoise$Mouse.gene.name)) - 1) 
+m = as.numeric(length(unique(m1$gene))) 
+n = as.numeric(22367 - m) 
+k = as.numeric(length(unique(IFGturquoise$Mouse.gene.name))) 
+IFGturquoise.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+
+#mouse module to IFGblue
+q = as.numeric(length(intersect(m1$gene, IFGblue$Mouse.gene.name)) - 1) 
+m = as.numeric(length(unique(m1$gene))) 
+n = as.numeric(22367 - m) 
+k = as.numeric(length(unique(IFGblue$Mouse.gene.name))) 
+IFGblue.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+
+#mouse module to IFGbrown
+q = as.numeric(length(intersect(m1$gene, IFGbrown$Mouse.gene.name)) - 1) 
+m = as.numeric(length(unique(m1$gene))) 
+n = as.numeric(22367 - m) 
+k = as.numeric(length(unique(IFGbrown$Mouse.gene.name))) 
+IFGbrown.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+
+#mouse module to IFGyellow
+q = as.numeric(length(intersect(m1$gene, IFGyellow$Mouse.gene.name)) - 1) 
+m = as.numeric(length(unique(m1$gene))) 
+n = as.numeric(22367 - m) 
+k = as.numeric(length(unique(IFGyellow$Mouse.gene.name))) 
+IFGyellow.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+
+
+#mouse module to STGturquoise
+q = as.numeric(length(intersect(m1$gene, STGturquoise$Mouse.gene.name)) - 1) 
+m = as.numeric(length(unique(m1$gene))) 
+n = as.numeric(22367 - m) 
+k = as.numeric(length(unique(STGturquoise$Mouse.gene.name))) 
+STGturquoise.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+
+#mouse module to STGblue
+q = as.numeric(length(intersect(m1$gene, STGblue$Mouse.gene.name)) - 1) 
+m = as.numeric(length(unique(m1$gene))) 
+n = as.numeric(22367 - m) 
+k = as.numeric(length(unique(STGblue$Mouse.gene.name))) 
+STGblue.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+
+#mouse module to STGbrown
+q = as.numeric(length(intersect(m1$gene, STGbrown$Mouse.gene.name)) - 1) 
+m = as.numeric(length(unique(m1$gene))) 
+n = as.numeric(22367 - m) 
+k = as.numeric(length(unique(STGbrown$Mouse.gene.name))) 
+STGbrown.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+
+#mouse module to STGyellow
+q = as.numeric(length(intersect(m1$gene, STGyellow$Mouse.gene.name)) - 1) 
+m = as.numeric(length(unique(m1$gene))) 
+n = as.numeric(22367 - m) 
+k = as.numeric(length(unique(STGyellow$Mouse.gene.name))) 
+STGyellow.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+
+
+#mouse module to PHGturquoise
+q = as.numeric(length(intersect(m1$gene, PHGturquoise$Mouse.gene.name)) - 1) 
+m = as.numeric(length(unique(m1$gene))) 
+n = as.numeric(22367 - m) 
+k = as.numeric(length(unique(PHGturquoise$Mouse.gene.name))) 
+PHGturquoise.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+
+#mouse module to PHGblue
+q = as.numeric(length(intersect(m1$gene, PHGblue$Mouse.gene.name)) - 1) 
+m = as.numeric(length(unique(m1$gene))) 
+n = as.numeric(22367 - m) 
+k = as.numeric(length(unique(PHGblue$Mouse.gene.name))) 
+PHGblue.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+
+#mouse module to PHGbrown
+q = as.numeric(length(intersect(m1$gene, PHGbrown$Mouse.gene.name)) - 1) 
+m = as.numeric(length(unique(m1$gene))) 
+n = as.numeric(22367 - m) 
+k = as.numeric(length(unique(PHGbrown$Mouse.gene.name))) 
+PHGbrown.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+
+#mouse module to PHGyellow
+q = as.numeric(length(intersect(m1$gene, PHGyellow$Mouse.gene.name)) - 1) 
+m = as.numeric(length(unique(m1$gene))) 
+n = as.numeric(22367 - m) 
+k = as.numeric(length(unique(PHGyellow$Mouse.gene.name))) 
+PHGyellow.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+
+#mouse module to PHGgreen
+q = as.numeric(length(intersect(m1$gene, PHGgreen$Mouse.gene.name)) - 1) 
+m = as.numeric(length(unique(m1$gene))) 
+n = as.numeric(22367 - m) 
+k = as.numeric(length(unique(PHGgreen$Mouse.gene.name))) 
+PHGgreen.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+
+
+#mouse module to FPturquoise
+q = as.numeric(length(intersect(m1$gene, FPturquoise$Mouse.gene.name)) - 1) 
+m = as.numeric(length(unique(m1$gene))) 
+n = as.numeric(22367 - m) 
+k = as.numeric(length(unique(FPturquoise$Mouse.gene.name))) 
+FPturquoise.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+
+#mouse module to FPblue
+q = as.numeric(length(intersect(m1$gene, FPblue$Mouse.gene.name)) - 1) 
+m = as.numeric(length(unique(m1$gene))) 
+n = as.numeric(22367 - m) 
+k = as.numeric(length(unique(FPblue$Mouse.gene.name))) 
+FPblue.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+
+#mouse module to FPbrown
+q = as.numeric(length(intersect(m1$gene, FPbrown$Mouse.gene.name)) - 1) 
+m = as.numeric(length(unique(m1$gene))) 
+n = as.numeric(22367 - m) 
+k = as.numeric(length(unique(FPbrown$Mouse.gene.name))) 
+FPbrown.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+
+#mouse module to FPyellow
+q = as.numeric(length(intersect(m1$gene, FPyellow$Mouse.gene.name)) - 1) 
+m = as.numeric(length(unique(m1$gene))) 
+n = as.numeric(22367 - m) 
+k = as.numeric(length(unique(FPyellow$Mouse.gene.name))) 
+FPyellow.p <- phyper(q, m, n, k, lower.tail = FALSE, log.p = FALSE)
+
+
+hyper.AMPADMods <- rbind(DLPFCturquoise.p, DLPFCblue.p, DLPFCbrown.p, DLPFCyellow.p, CBEturquoise.p,
+                         CBEblue.p, CBEbrown.p, CBEyellow.p, TCXturquoise.p, TCXblue.p,
+                         TCXbrown.p, TCXyellow.p, TCXgreen.p, IFGturquoise.p, IFGblue.p,
+                         IFGbrown.p, IFGyellow.p, STGturquoise.p, STGblue.p, STGbrown.p,
+                         STGyellow.p, PHGturquoise.p, PHGblue.p, PHGbrown.p, PHGyellow.p,
+                         PHGgreen.p, FPturquoise.p, FPblue.p, FPbrown.p, FPyellow.p)
+
+write.csv(hyper.AMPADMods, file = "pvals.csv", row.names = FALSE)
+  
+
+############################################
+# get adjusted pvals
+library(readr)
+pvalues <- read.csv("AMPAD_HumantoMouse_OverlapPvals.csv")
+pvals.column <- pvalues[,3]
+BH <- p.adjust(pvals.column, "BH", n=length(pvals.column))
+pvalues <- cbind(pvalues, BH)
+write.csv(pvalues , file = "AMPAD_HumantoMouse_OverlapPvals_padj.csv", row.names = FALSE)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
